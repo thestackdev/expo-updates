@@ -18,7 +18,6 @@ import {
 } from '../../common/helpers';
 
 export default async function manifestEndpoint(req: NextApiRequest, res: NextApiResponse) {
-  console.log('manifestEndpoint', JSON.stringify(req.headers));
   
   if (req.method !== 'GET') {
     res.statusCode = 405;
@@ -64,6 +63,8 @@ export default async function manifestEndpoint(req: NextApiRequest, res: NextApi
     });
     return;
   }
+
+  console.log('updateBundlePath', updateBundlePath, runtimeVersion, platform, protocolVersion);
 
   const updateType = await getTypeOfUpdateAsync(updateBundlePath);
 
