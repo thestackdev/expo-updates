@@ -4,20 +4,22 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { serializeDictionary } from 'structured-headers';
 
 import {
-  getAssetMetadataAsync,
-  getMetadataAsync,
+  NoUpdateAvailableError,
   convertSHA256HashToUUID,
   convertToDictionaryItemsRepresentation,
-  signRSASHA256,
-  getPrivateKeyAsync,
+  createNoUpdateAvailableDirectiveAsync,
+  createRollBackDirectiveAsync,
+  getAssetMetadataAsync,
   getExpoConfigAsync,
   getLatestUpdateBundlePathForRuntimeVersionAsync,
-  createRollBackDirectiveAsync,
-  NoUpdateAvailableError,
-  createNoUpdateAvailableDirectiveAsync,
+  getMetadataAsync,
+  getPrivateKeyAsync,
+  signRSASHA256,
 } from '../../common/helpers';
 
 export default async function manifestEndpoint(req: NextApiRequest, res: NextApiResponse) {
+  console.log('manifestEndpoint', JSON.stringify(req.headers));
+  
   if (req.method !== 'GET') {
     res.statusCode = 405;
     res.json({ error: 'Expected GET.' });
