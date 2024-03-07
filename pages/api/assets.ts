@@ -75,3 +75,6 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
     res.json({ error });
   }
 }
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0

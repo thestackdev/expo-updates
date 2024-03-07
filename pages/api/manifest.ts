@@ -18,6 +18,7 @@ import {
 } from '../../common/helpers';
 
 export default async function manifestEndpoint(req: NextApiRequest, res: NextApiResponse) {  
+  console.log('called');
   
   if (req.method !== 'GET') {
     res.statusCode = 405;
@@ -317,3 +318,6 @@ async function putNoUpdateAvailableInResponseAsync(
   res.write(form.getBuffer());
   res.end();
 }
+
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
