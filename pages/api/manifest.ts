@@ -17,7 +17,7 @@ import {
   signRSASHA256,
 } from '../../common/helpers';
 
-export default async function manifestEndpoint(req: NextApiRequest, res: NextApiResponse) {
+export default async function manifestEndpoint(req: NextApiRequest, res: NextApiResponse) {  
   
   if (req.method !== 'GET') {
     res.statusCode = 405;
@@ -57,14 +57,13 @@ export default async function manifestEndpoint(req: NextApiRequest, res: NextApi
   try {
     updateBundlePath = await getLatestUpdateBundlePathForRuntimeVersionAsync(runtimeVersion);
   } catch (error: any) {
+    console.log('Error:', error);
     res.statusCode = 404;
     res.json({
       error: error.message,
     });
     return;
   }
-
-  console.log('updateBundlePath', updateBundlePath, runtimeVersion, platform, protocolVersion);
 
   const updateType = await getTypeOfUpdateAsync(updateBundlePath);
 
@@ -83,6 +82,7 @@ export default async function manifestEndpoint(req: NextApiRequest, res: NextApi
         await putRollBackInResponseAsync(req, res, updateBundlePath, protocolVersion);
       }
     } catch (maybeNoUpdateAvailableError) {
+      console.log('Error:', maybeNoUpdateAvailableError);
       if (maybeNoUpdateAvailableError instanceof NoUpdateAvailableError) {
         await putNoUpdateAvailableInResponseAsync(req, res, protocolVersion);
         return;
@@ -90,7 +90,7 @@ export default async function manifestEndpoint(req: NextApiRequest, res: NextApi
       throw maybeNoUpdateAvailableError;
     }
   } catch (error) {
-    console.error(error);
+    console.log('Error:', error);
     res.statusCode = 404;
     res.json({ error });
   }
@@ -160,8 +160,6 @@ async function putUpdateInResponseAsync(
       expoClient: expoConfig,
     },
   };
-
-  console.log('manifest', manifest, protocolVersion);
 
   let signature = null;
   const expectSignatureHeader = req.headers['expo-expect-signature'];

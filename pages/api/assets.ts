@@ -34,6 +34,7 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
   try {
     updateBundlePath = await getLatestUpdateBundlePathForRuntimeVersionAsync(runtimeVersion);
   } catch (error: any) {
+    console.log('Error:', error);
     res.statusCode = 404;
     res.json({
       error: error.message,
@@ -69,7 +70,7 @@ export default async function assetsEndpoint(req: NextApiRequest, res: NextApiRe
     );
     res.end(asset);
   } catch (error) {
-    console.log(error);
+    console.log('Error:', error);
     res.statusCode = 500;
     res.json({ error });
   }

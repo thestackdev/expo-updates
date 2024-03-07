@@ -106,6 +106,7 @@ export async function createRollBackDirectiveAsync(updateBundlePath: string) {
       },
     };
   } catch (error) {
+    console.log('No rollback found. Error:', error);
     throw new Error(`No rollback found. Error: ${error}`);
   }
 }
@@ -135,6 +136,7 @@ export async function getMetadataAsync({
       id: createHash(updateMetadataBuffer, 'sha256', 'hex'),
     };
   } catch (error) {
+    throw new Error(`No metadata found with runtime version: ${runtimeVersion}. Error: ${error}`);
     throw new Error(`No update found with runtime version: ${runtimeVersion}. Error: ${error}`);
   }
 }
@@ -158,6 +160,7 @@ export async function getExpoConfigAsync({
     const expoConfigJson = JSON.parse(expoConfigBuffer.toString('utf-8'));
     return expoConfigJson;
   } catch (error) {
+    console.log('No expo config found. Error:', error);
     throw new Error(
       `No expo config json found with runtime version: ${runtimeVersion}. Error: ${error}`
     );
